@@ -1,11 +1,13 @@
 const container = document.querySelector('#game');
 container.style.display = 'flex';
+
 makeDivGrid();
 
 const pixels = document.querySelectorAll('.pixel');
 console.log(pixels);
 for (const pixel of pixels) {
-    pixel.addEventListener('mouseover', draw);
+    // Note that arrow function can't be used because they do not have their own this.
+    pixel.addEventListener('mouseover', function() {draw(this)}); 
 }
 
 
@@ -23,26 +25,25 @@ function makeDivGrid() {
             square.style.width = '36px';
             square.style.backgroundColor = 'rgb(0, 0, 0)';
             square.style.borderStyle = 'solid';
-            square.style.borderColor = 'white';
+            // square.style.borderColor = 'white';
             col.appendChild(square);
         }
         container.appendChild(col);
     }
 }
 
-function draw() {
-    console.log(this);
-    const currentColorRGB = stringToRGB(this.style.backgroundColor);
+function draw(square) {
+    console.log(square);
+    const currentColorRGB = stringToRGB(square.style.backgroundColor);
     for (let i = 0; i < currentColorRGB.length; i++) {
         console.log(currentColorRGB[i]);
         currentColorRGB[i] += 255/10; //check that this is indeed working in tens
-
     }
     console.log('number is');
     console.log(currentColorRGB);
     console.log('string is');
     console.log(rgbToString(currentColorRGB));
-    this.style.backgroundColor = rgbToString(currentColorRGB);
+    square.style.backgroundColor = rgbToString(currentColorRGB);
 }
 
 function stringToRGB(stringColor) {
