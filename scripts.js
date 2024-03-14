@@ -1,11 +1,41 @@
+const EDGE_DIM = 576; //The edge dimension of the drawing area.
+
 const container = document.querySelector('#game');
 container.style.display = 'flex';
+container.style.flex = 'auto';
+container.style.width = EDGE_DIM + 'px';
+container.style.height = EDGE_DIM + 'px';
+
+const gridSizeBtn = document.querySelector('#grid-size');
+gridSizeBtn.addEventListener('click', updateResolution);
 
 makePixelGrid();
 init();
 
-const gridSizeBtn = document.querySelector('#grid-size');
-gridSizeBtn.addEventListener('click', () => prompt('Enter the number of squares per side. (min: 1, max: 100)'));
+//Todo next: make CSS file and move the styling to it.
+function makePixelGrid(n = 16) {
+    //Make a 16x16 grid of square divs.
+    const container = document.querySelector('#game');
+    container.replaceChildren();
+
+    for(let i = 0; i < n; i++) {
+        const col = document.createElement('div');
+        col.style.flex = '1 0 auto';
+        col.style.display = 'flex';
+        col.style.flexDirection = 'column';
+        col.classList.add('col');
+
+        for(let j = 0; j < n; j++) {
+            const pixel = document.createElement('div');
+            pixel.style.flex = '1 0 auto';
+            pixel.classList.add('pixel');
+            pixel.style.backgroundColor = 'rgb(0, 0, 0)';
+            pixel.style.borderStyle = 'solid';
+            col.appendChild(pixel);
+        }
+        container.appendChild(col);
+    }
+}
 
 function init() {
     const pixels = document.querySelectorAll('.pixel');
@@ -16,36 +46,26 @@ function init() {
     }   
 }
 
-//Todo next: make CSS file and move the styling to it.
-//Todo: make the squares fill the total size.
-function makePixelGrid(n = 16) {
-    //Make a 16x16 grid of square divs.
-    const container = document.querySelector('#game');
-    container.replaceChildren();
-
-    const edgeDim = 576; //The edge dimension of the drawing area.
-
-    for(let i = 0; i < 16; i++) {
-        const col = document.createElement('div');
-        col.classList.add('col');
-        for(let j = 0; j < 16; j++) {
-            const square = document.createElement('div');
-            square.classList.add('pixel');
-            square.style.height = '36px';
-            square.style.width = '36px';
-            square.style.backgroundColor = 'rgb(0, 0, 0)';
-            square.style.borderStyle = 'solid';
-            // square.style.borderColor = 'white';
-            col.appendChild(square);
-        }
-        container.appendChild(col);
+function updateResolution() {
+    const res = prompt('Enter the number of squares per size (min: 1, max: 100');
+    if (isNaN(parseInt(res))) {
+        alert('Invalid number! Using default resolution 16x16');
+        makePixelGrid();
     }
-}
+    else if (res < 1) {
+        alert('Numbers less than zero not permitted! Using resolution 1x1');
+        makePixelGrid(1);
+    }
+    else if (res > 100) {
+        alert('Numbers more than 100 not permitted! Using resolution 100x100');
+        makePixelGrid(100);
+    }
+    else {
+        makePixelGrid(res);
+    }
 
-const myNode = document.getElementById("foo");
-  while (myNode.firstChild) {
-    myNode.removeChild(myNode.lastChild);
-  }
+    init();
+}
 
 function draw(square) {
     console.log(square);
