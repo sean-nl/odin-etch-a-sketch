@@ -1,20 +1,30 @@
 const container = document.querySelector('#game');
 container.style.display = 'flex';
 
-makeDivGrid();
+makePixelGrid();
+init();
 
-const pixels = document.querySelectorAll('.pixel');
-console.log(pixels);
-for (const pixel of pixels) {
-    // Note that arrow function can't be used because they do not have their own this.
-    pixel.addEventListener('mouseover', function() {draw(this)}); 
+const gridSizeBtn = document.querySelector('#grid-size');
+gridSizeBtn.addEventListener('click', () => prompt('Enter the number of squares per side. (min: 1, max: 100)'));
+
+function init() {
+    const pixels = document.querySelectorAll('.pixel');
+    console.log(pixels);
+    for (const pixel of pixels) {
+        // Note that arrow function can't be used because they do not have their own this.
+        pixel.addEventListener('mouseover', function() {draw(this)}); 
+    }   
 }
 
-
 //Todo next: make CSS file and move the styling to it.
-function makeDivGrid() {
+//Todo: make the squares fill the total size.
+function makePixelGrid(n = 16) {
     //Make a 16x16 grid of square divs.
     const container = document.querySelector('#game');
+    container.replaceChildren();
+
+    const edgeDim = 576; //The edge dimension of the drawing area.
+
     for(let i = 0; i < 16; i++) {
         const col = document.createElement('div');
         col.classList.add('col');
@@ -31,6 +41,11 @@ function makeDivGrid() {
         container.appendChild(col);
     }
 }
+
+const myNode = document.getElementById("foo");
+  while (myNode.firstChild) {
+    myNode.removeChild(myNode.lastChild);
+  }
 
 function draw(square) {
     console.log(square);
