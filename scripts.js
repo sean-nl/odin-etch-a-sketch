@@ -12,9 +12,10 @@ gridSizeBtn.addEventListener('click', updateResolution);
 makePixelGrid();
 init();
 
-//Todo next: make CSS file and move the styling to it.
+//Could make an external CSS and link to it instead of setting this in the loop.
+//But for this exercise, leaving it this way.
 function makePixelGrid(n = 16) {
-    //Make a 16x16 grid of square divs.
+    //Make an n x n grid of square divs.
     const container = document.querySelector('#game');
     container.replaceChildren();
 
@@ -39,9 +40,8 @@ function makePixelGrid(n = 16) {
 
 function init() {
     const pixels = document.querySelectorAll('.pixel');
-    console.log(pixels);
     for (const pixel of pixels) {
-        // Note that arrow function can't be used because they do not have their own this.
+        // Note that arrow function can't be used because they do not have their own 'this'.
         pixel.addEventListener('mouseover', function() {draw(this)}); 
     }   
 }
@@ -68,16 +68,10 @@ function updateResolution() {
 }
 
 function draw(square) {
-    console.log(square);
     const currentColorRGB = stringToRGB(square.style.backgroundColor);
     for (let i = 0; i < currentColorRGB.length; i++) {
-        console.log(currentColorRGB[i]);
-        currentColorRGB[i] += 255/10; //check that this is indeed working in tens
+        if (currentColorRGB[i] <= 255) currentColorRGB[i] += 255/10;
     }
-    console.log('number is');
-    console.log(currentColorRGB);
-    console.log('string is');
-    console.log(rgbToString(currentColorRGB));
     square.style.backgroundColor = rgbToString(currentColorRGB);
 }
 
