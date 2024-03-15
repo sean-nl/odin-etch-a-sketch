@@ -46,6 +46,14 @@ function init() {
     }   
 }
 
+function draw(square) {
+    const currentColorRGB = stringToRGB(square.style.backgroundColor);
+    for (let i = 0; i < currentColorRGB.length; i++) {
+        if (currentColorRGB[i] <= 255) currentColorRGB[i] += 255/10;
+    }
+    square.style.backgroundColor = rgbToString(currentColorRGB);
+}
+
 function updateResolution() {
     const res = prompt('Enter the number of squares per size (min: 1, max: 100');
     if (isNaN(parseInt(res))) {
@@ -65,14 +73,6 @@ function updateResolution() {
     }
 
     init();
-}
-
-function draw(square) {
-    const currentColorRGB = stringToRGB(square.style.backgroundColor);
-    for (let i = 0; i < currentColorRGB.length; i++) {
-        if (currentColorRGB[i] <= 255) currentColorRGB[i] += 255/10;
-    }
-    square.style.backgroundColor = rgbToString(currentColorRGB);
 }
 
 function stringToRGB(stringColor) {
